@@ -16,9 +16,7 @@
 
 > End-to-end pipeline: SQL Source → ADF Ingestion → Bronze / Silver / Gold (ADLS Gen2) → Databricks Transformation → Synapse Star Schema → Power BI
 
-![Architecture Diagram](https://raw.githubusercontent.com/kannusharma935/Azure_DE_Cars_Data/master/ScreenShots/architecture.png)
-
-> *If the image above doesn't load, see the `ScreenShots/` folder in the repo.*
+![Architecture Diagram](./ScreenShots/azure_cars_de_pipeline_architecture.svg)
 
 The pipeline follows a **Medallion Architecture** pattern across three layers, all stored on **Azure Data Lake Storage Gen2**:
 
@@ -43,6 +41,8 @@ The pipeline follows a **Medallion Architecture** pattern across three layers, a
 | Security | Azure Active Directory + Key Vault |
 | Version Control | GitHub |
 
+![Azure resources used in this project](./ScreenShots/azure_resources%20used.png)
+
 ---
 
 ## 🔄 Pipeline Walkthrough
@@ -51,7 +51,7 @@ The pipeline follows a **Medallion Architecture** pattern across three layers, a
 
 ADF pulls data **incrementally** from the SQL source using a watermark-based approach, ensuring only new/changed records are loaded each run.
 
-![ADF Pipeline](https://raw.githubusercontent.com/kannusharma935/Azure_DE_Cars_Data/master/ScreenShots/adf_pipeline.png)
+![ADF Pipeline](./ScreenShots/data_factory_pipeline.png)
 
 Key ADF components used:
 - **Lookup activity** — reads the last watermark value
@@ -65,8 +65,6 @@ Key ADF components used:
 
 Raw Parquet files land in the Bronze container partitioned by date. No transformations — pure source fidelity.
 
-![Bronze Layer](https://raw.githubusercontent.com/kannusharma935/Azure_DE_Cars_Data/master/ScreenShots/bronze_layer.png)
-
 ---
 
 ### 3 · Silver Layer — Databricks Transformation
@@ -78,15 +76,13 @@ Databricks PySpark notebooks read Bronze data and produce a clean **One Big Tabl
 - Merging incremental records with existing data
 - Written back to Silver as Parquet
 
-![Databricks Notebook](https://raw.githubusercontent.com/kannusharma935/Azure_DE_Cars_Data/master/ScreenShots/databricks_notebook.png)
+![Databricks Pipeline](./ScreenShots/Databricks_pipeline.png)
 
 ---
 
 ### 4 · Gold Layer — Delta Lake (Star Schema)
 
 The Gold layer applies dimensional modelling, writing fact and dimension tables as **Delta Lake** tables. Delta gives ACID transactions, schema evolution, and time travel.
-
-![Gold Layer](https://raw.githubusercontent.com/kannusharma935/Azure_DE_Cars_Data/master/ScreenShots/gold_layer.png)
 
 ---
 
@@ -118,15 +114,11 @@ dim_branch ──►      FactSales      ◄── dim_date
                └────────────────┘
 ```
 
-![Synapse Star Schema](https://raw.githubusercontent.com/kannusharma935/Azure_DE_Cars_Data/master/ScreenShots/synapse_star_schema.png)
-
 ---
 
 ### 6 · Power BI — Reporting
 
 Power BI connects to the Gold / Synapse layer and delivers interactive dashboards for revenue, units sold, and breakdowns by model, branch, and dealer.
-
-![Power BI Dashboard](https://raw.githubusercontent.com/kannusharma935/Azure_DE_Cars_Data/master/ScreenShots/powerbi_dashboard.png)
 
 ---
 
@@ -155,7 +147,10 @@ Azure_DE_Cars_Data/
 │   └── *.sql                             # Source SQL database scripts
 │
 └── ScreenShots/
-    └── *.png                             # Project screenshots
+    ├── azure_cars_de_pipeline_architecture.svg
+    ├── azure_resources used.png
+    ├── data_factory_pipeline.png
+    └── Databricks_pipeline.png
 ```
 
 ---
