@@ -1,0 +1,20 @@
+{
+    "name": "Parquet1",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "LS_Adf_dataengg_dl",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Parquet",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "folderPath": "rawdata",
+                "fileSystem": "bronze"
+            },
+            "compressionCodec": "snappy"
+        },
+        "schema": []
+    }
+}

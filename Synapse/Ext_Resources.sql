@@ -1,16 +1,10 @@
 --  external data source,  system managed identity, database scoped cred  
 
--- CREATE MASTER KEY ENCRYPTION BY PASSWORD='password@123456'
+-- CREATE MASTER KEY ENCRYPTION BY PASSWORD=''
 
 CREATE DATABASE SCOPED CREDENTIAL aka_creds
 WITH IDENTITY='Managed Identity'
 
-
-CREATE EXTERNAL DATA SOURCE silver_source
-WITH(
-    LOCATION= 'https://azuredwhengglake.dfs.core.windows.net/silver/',
-    CREDENTIAL= aka_creds
-)
 
 
 --EXternal File Format
@@ -29,7 +23,7 @@ WITH(
 
 CREATE EXTERNAL DATA SOURCE gold_source
 WITH(
-    LOCATION= 'https://azuredwhengglake.dfs.core.windows.net/gold/',
+    LOCATION= '',
     CREDENTIAL= aka_creds
 )
 
