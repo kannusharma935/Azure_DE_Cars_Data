@@ -57,7 +57,6 @@ Key ADF components used:
 - **Lookup activity** — reads the last watermark value
 - **Copy activity** — moves incremental records to Bronze (ADLS Gen2)
 - **Stored Procedure activity** — updates the watermark after successful load
-- Pipelines linked to **GitHub** for version control
 
 ---
 
